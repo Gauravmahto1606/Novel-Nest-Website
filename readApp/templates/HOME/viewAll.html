@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script lanaguage="javascript" type="text/javascript">
+        function change(){
+            document.getElementById("icon").style.background = "none"
+        }
+        function searchBook(){
+
+        }
+    </script>
+</head>
+<body>
+    
+    <header class="fixed-top">
+        <div class="container-fluid" style="border-bottom: 1px solid black; background-color: white;">
+            <a href="/"><img src="/media/back.png" alt="back" style="width: 40px; height: 40px;"></a>
+        </div>
+
+        <div class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#collapseNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse row " id="collapseNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item col-md-2">
+                            <a href="/viewAll/{{'bestSeller'}}" class="nav-link">Best Seller<hr></a>
+                        </li>
+                        <li class="nav-item col-md-2">
+                            <a href="/viewAll/{{'newReleases'}}" class="nav-link">New Releases<hr></a>
+                        </li>
+                        <li class="nav-item col-md-2">
+                            <a href="/viewAll/{{1}}" class="nav-link">Romance<hr></a>
+                        </li>
+                        <li class="nav-item col-md-2">
+                            <a href="/viewAll/{{2}}" class="nav-link">Sci-Fi & Fantasy<hr></a>
+                        </li>
+                        <li class="nav-item col-md-2">
+                            <a href="/viewAll/{{3}}" class="nav-link">Mystery & Thriller<hr></a>
+                        </li>
+                        <li class="nav-item col-md-2">
+                            <a href="/viewAll/{{4}}" class="nav-link">Comics</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main> 
+        <div class="row" style="margin: 50px;margin-top: 100px;">
+            <div class="row">
+                <h1 style="color: white; text-align: center;margin: 30px; padding: 5px; border: 3px solid white; background-color: rgba(74, 73, 73, 0.4);backdrop-filter: blur(5px);">{{name}}</h1>
+            </div>
+            {%for book_data in genre_data%}
+                    <div class="carousel_img_page col-3">
+                        <a href="/viewBook/{{book_data.book_id}}"><img src="/media/{{book_data.cover_page}}" class="carousel_img" style="border: 3px solid white; border-radius: 3%; margin: 20px;"></a>
+                    </div>
+            {%endfor%}
+        </div>
+    </main>
+</body>
+</html>

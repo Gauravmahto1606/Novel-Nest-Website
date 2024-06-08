@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script lanaguage="javascript" type="text/javascript">
+        function change(){
+            document.getElementById("icon").style.background = "none"
+        }
+        function searchBook(){
+
+        }
+
+        function validateForm() {
+            var coverPage = document.querySelector('input[name="cover_page"]');
+            var pdfFile = document.querySelector('input[name="pdf_info"]');
+            var coverPageExt = coverPage.value.split('.').pop().toLowerCase();
+            var pdfExt = pdfFile.value.split('.').pop().toLowerCase();
+
+            if (coverPageExt !== 'jpg' && coverPageExt !== 'jpeg' && coverPageExt !== 'png') {
+                alert("Please upload only JPG, JPEG, or PNG files for the cover page.");
+                return false;
+            }
+
+            if (pdfExt !== 'pdf') {
+                alert("Please upload only PDF files for the book PDF.");
+                return false;
+            }
+
+            return true;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var dropdownItems = document.querySelectorAll('.dropdown-item');
+
+            dropdownItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    var selectedValue = this.getAttribute('value');
+                    // Do something with the selected value, e.g., update a hidden input field
+                    document.getElementById('selected_genre').value = selectedValue;
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    
+    <header class="fixed-top">
+        <div class="container-fluid" style="border-bottom: 1px solid black; background-color: white;">
+            <a href="/"><img src="/media/back.png" alt="back" style="width: 40px; height: 40px;"></a>
+        </div>
+    </header>
+    
+    <main> 
+        <div class="container-fluid p-5">
+            <form class="col-6 mx-auto card p-3 shadow-lg was-validated" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                {% csrf_token %}
+                <h2>Book Details</h2>
+                <hr>
+                {% if messages %}
+                    <div class="alert alert-warning" role="alert">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="mb-3">
+                    <label for="title" class="form-label">Book Name:</label>
+                    <input type="text" class="form-control" required name="title">
+                    <div class="valid-feedback">Valid.</div>
+                    <div class="invalid-feedback">Please fill out this field.</div>
+                </div>
+                <div class="mb-3">
+                    
+                    <label for="title" class="form-label">Author Name : </label>
+                    <select name="selected_author">
+                        {%for author in author_data%}
+                            <option value={{author.author_id}}>{{author.author_name}}</option>
+                        {%endfor%}
+                        
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="title" class="form-label">Genre Name : </label>
+                    <select name="selected_genre">
+                        {%for genre in genre_data%}
+                            <option value={{genre.genre_id}}>{{genre.genre_name}}</option>
+                        {%endfor%}
+                        
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="publication_year" class="form-label">Publication Year:</label>
+                    <input type="text" class="form-control" name="publication_year" required>
+                    <div class="valid-feedback">Valid.</div>
+                    <div class="invalid-feedback">Please fill out this field.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="isbn" class="form-label">ISBN:</label>
+                    <input type="text" class="form-control" name="isbn" required>
+                    <div class="valid-feedback">Valid.</div>
+                    <div class="invalid-feedback">Please fill out this field.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="isbn" class="form-label">Add a short description : (*optional)</label>
+                    <textarea class="form-control" name="description" cols="30" rows="5" required></textarea>
+                    <div class="valid-feedback">Valid.</div>
+                    <div class="invalid-feedback">Please fill out this field.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="titlePage" class="form-label">Upload your Book's title page:</label>
+                    <input type="file" class="form-control" name="cover_page" required accept="Image/*">
+                    <div class="valid-feedback">Valid.</div>
+                    <div class="invalid-feedback">Please fill out this field.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="pdf" class="form-label">Upload your Book PDF:</label>
+                    <input type="file" class="form-control" name="pdf_info" required accept='.pdf'>
+                    <div class="valid-feedback">Valid.</div>
+                    <div class="invalid-feedback">Please fill out this field.</div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,471 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <script lanaguage="javascript" type="text/javascript">
+        function change(){
+            document.getElementById("icon").style.background = "none"
+        }
+        function searchBook(){
+
+        }
+    </script>
+</head>
+<body>
+    <header class="fixed-top">
+        <div class="row bg-white text-dark" id="navLap">
+            <div class="col-3 col-md-4" style="display: flex;">
+                <img src="/media/open-book.png" alt="logo" style="width: 40px; height: 40px; margin-left:10px">
+                <h2 style="padding-left: 15px; padding-top: 3px;">Novel Nest</h2>
+            </div>
+            <div class="col-5 col-md-4" style="display: inline-block; margin-top:5px">
+                <form method="get" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="input-group">
+                      <input class="form-control search-bar" type="search" name="search" placeholder="Search"
+                        aria-label="Search">
+                      <button type="submit" class="btn btn-outline-secondary input-group-text"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-4 col-md-4" style="margin-top:5px ; display: flex; justify-content: end;align-items: center;">
+                <a href="bookDetails/"><img src="/media/addBook.png"  style="width: 32px; height: 32px;margin-right: 24px;"></a>
+               
+                {% if request.user.is_authenticated %}
+                    <button type="button" id="accountIcon" class="btn btn-outline-danger">
+                        <img src="/media/user.png" style="width: 15px; height: 15px;">
+                        <a style="text-decoration: none; color: black;" href="login/">{{ request.user.first_name}} {{ request.user.last_name}}</a>
+                    </button>
+                    <button type="button" id="accountIcon" style="margin:6px" class="btn btn-outline-danger">
+                        <a style="text-decoration: none; color: black;" href="logout/">Logout</a>
+                    </button>
+                {% else %}
+                    <button type="button" id="accountIcon" class="btn btn-outline-danger">
+                        <img src="/media/user.png" style="width: 15px; height: 15px;">
+                        <a style="text-decoration: none; color: black;" href="login/">Account</a>
+                    </button>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="row" id="navMob">
+            <div class="col-6 col-md-4" style="display: flex;">
+                <img src="/media/open-book.png" alt="logo" style="width: 40px; height: 40px;">
+                <h2 style="padding-left: 15px; padding-top: 3px;">Novel Nest</h2>
+            </div>
+            <div class="col-6 col-md-4">
+                <button type="button" id="accountIcon" class="btn btn-outline-danger float-end"><img src="/media/user.png" style="width: 15px; height: 15px;"><a href=""> Account</a></button>
+            </div>
+            <div class="col-12 col-md-4" style="display: inline-block;">
+                <input type="search" id = "icon" placeholder="Search" onchange="searchBook()" class="form-control" onkeypress="change()">
+            </div>
+            <br><br>
+        </div>
+
+        <div class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#collapseNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse row " id="collapseNavbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item col-md-2">
+                            <a href="#bestsellers" class="nav-link">Best Seller<hr></a>
+                        </li>
+                        <li class="nav-item col-md-2">
+                            <a href="#newreleases" class="nav-link">New Releases<hr></a>
+                        </li>
+                        <li class="nav-item col-md-2">
+                            <a href="#romance" class="nav-link">Romance<hr></a>
+                        </li>
+                        <li class="nav-item col-md-2">
+                            <a href="#fantasy" class="nav-link">Sci-Fi & Fantasy<hr></a>
+                        </li>
+                        <li class="nav-item col-md-2">
+                            <a href="#thriller" class="nav-link">Mystery & Thriller<hr></a>
+                        </li>
+                        <li class="nav-item col-md-2">
+                            <a href="#comics" class="nav-link">Comics</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main data-bs-spy="scroll" data-bs-target=".navbar"> 
+        <div class="container-fluid" style="position: relative;margin-top: 115px;">
+                <div id="main_img" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner container-fluid">
+                        <div class="carousel-item active">
+                            <div class="">
+                                <img src="/media/main_carousel_img1.jpg"class="main_carousel1" >
+                                <img src="/media/black_background.jpg" alt="" height="600px" width="100%" style="opacity: 0.5; z-index: -1;">
+                                <div class="carousel-caption">
+                                    <h1  class="display-1 " style="color: rgb(206, 196, 196); z-index: 1">TOP AUTHORS BOOKS ARE AVAILABLE.</h1>  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="">
+                                <img src="/media/main_carousel_img2.jpg" class="main_carousel1">
+                                <img src="/media/black_background.jpg" alt="" height="600px" width="100%" style="opacity: 0.5; z-index: -1;">
+                                <div class="carousel-caption">
+                                    <h1 class="display-1 " style="color: rgb(206, 196, 196); z-index: 1">LOTS OF EBOOKS. 100% FREE </h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="">
+                                <img src="/media/main_carousel_img3.jpg" class="main_carousel1">
+                                <img src="/media/black_background.jpg" alt="" height="600px" width="100%" style="opacity: 0.5; z-index: -1;">
+                                <div class="carousel-caption">
+                                    <h1 class="display-1 " style="color: rgb(206, 196, 196); z-index: 1">THE ULTIMATE GUIDE TO FREE EBOOKS </h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="">
+                                <img src="/media/main_carousel_img4.jpg" class="main_carousel1">
+                                <img src="/media/black_background.jpg" alt="" height="600px" width="100%" style="opacity: 0.5; z-index: -1;">
+                                <div class="carousel-caption">
+                                    <h1 class="display-1  " style="color: rgb(206, 196, 196); z-index: 1">FREE AND DISCOUNTED BESTSELLERS</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev " data-bs-target="#main_img" data-bs-slide="prev" style="margin-top: 300px;">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" data-bs-target="#main_img" data-bs-slide="next" style="margin-top: 300px;">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+        </div> 
+
+        <div class="novelMainBody">
+            <div class="outerCarouselDiv" id="bestsellers">
+                <div class="outerCarouselDiv-items" style="background-color:rgb(186, 177, 177);">
+                    <div class="carouselTitle" style="height: 15%;">
+                        <div class="row" style="width: 100%;">
+                            <div class="col-8">
+                                <h1 class="text-end">BEST SELLERS</h1>
+                            </div>
+                            <div class="col-4 viewall">
+                                <button class="btn btn-outline-dark">
+                                    <a href="viewAll/{{'bestSeller'}}" class="viewAll_button">view all</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carouselBody" style="height: 85%;">
+                        <div id="demo1" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner container-fluid">
+                                <div class="carousel-item active">
+                                        <div class="row">
+                                            {%for book_data in zipped_data%}
+                                                <div class="carousel_img_page col-3">
+                                                    <a href="viewBook/{{book_data.book_id}}"><img src="/media/{{book_data.cover_page}}" class="carousel_img"></a>
+                                                </div>
+                                            {%endfor%}
+                                        </div>
+                                        
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="row">
+                                        {%for book_data in zipped_data1%}
+                                                <div class="carousel_img_page col-3">
+                                                    <a href="viewBook/{{book_data.book_id}}"><img src="/media/{{book_data.cover_page}}" class="carousel_img"></a>
+                                                </div>
+                                        {%endfor%}
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" data-bs-target="#demo1" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next" data-bs-target="#demo1" data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="outerCarouselDiv" id="newreleases">
+                <div class="outerCarouselDiv-items" style="background-color:rgb(186, 177, 177);">
+                    <div class="carouselTitle" style="height: 15%;">
+                        <div class="row" style="width: 100%;">
+                            <div class="col-8">
+                                <h1 class="text-end">NEW RELEASES</h1>
+                            </div>
+                            <div class="col-4 viewall">
+                                <button class="btn btn-outline-dark">
+                                    <a href="viewAll/{{'newReleases'}}" class="viewAll_button">view all</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carouselBody" style="height: 85%;">
+                        <div id="demo2" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner container-fluid">
+                                <div class="carousel-item active">
+                                    <div class="row">
+                                        {%for book_data in newReleases_data%}
+                                                <div class="carousel_img_page col-3">
+                                                    <a href="viewBook/{{book_data.book_id}}"><img src="/media/{{book_data.cover_page}}" class="carousel_img"></a>
+                                                </div>
+                                        {%endfor%}
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="row">
+                                        {%for book_data in newReleases_data1%}
+                                                <div class="carousel_img_page col-3">
+                                                    <a href="viewBook/{{book_data.book_id}}"><img src="/media/{{book_data.cover_page}}" class="carousel_img"></a>
+                                                </div>
+                                        {%endfor%}
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" data-bs-target="#demo2" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next" data-bs-target="#demo2" data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- <div class="container-fluid" style="position:relative;">
+                <img src="/media/extra_img2.jpg" alt="" height="550px" width="100%">
+            </div> -->
+          
+            <div class="d-flex justify-content-center align-items-center outerCarouselDiv" id="romance">
+                <div class="outerCarouselDiv-items" style="background-color:rgb(186, 177, 177);">
+                    <div class="carouselTitle" style="height: 15%;">
+                        <div class="row" style="width: 100%;">
+                            <div class="col-8">
+                                <h1 class="text-end">BEST OF ROMANCE</h1>
+                            </div>
+                            <div class="col-4 viewall">
+                                <button class="btn btn-outline-dark">
+                                    <a href="viewAll/{{1}}" class="viewAll_button">view all</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carouselBody" style="height: 85%;">
+                        <div id="demo3" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner container-fluid">
+                                <div class="carousel-item active">
+                                    <div class="row">
+                                        {%for book_data in romance_data%}
+                                                <div class="carousel_img_page col-3">
+                                                    <a href="viewBook/{{book_data.book_id}}"><img src="/media/{{book_data.cover_page}}" class="carousel_img"></a>
+                                                </div>
+                                        {%endfor%}
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="row">
+                                        {%for book_data in romance_data1%}
+                                                <div class="carousel_img_page col-3">
+                                                    <a href="viewBook/{{book_data.book_id}}"><img src="/media/{{book_data.cover_page}}" class="carousel_img"></a>
+                                                </div>
+                                        {%endfor%}
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" data-bs-target="#demo3" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next" data-bs-target="#demo3" data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+          
+            <div class="d-flex justify-content-center align-items-center outerCarouselDiv" id="fantasy">
+                <div class="outerCarouselDiv-items" style="background-color:rgb(186, 177, 177);">
+                    <div class="carouselTitle" style="height: 15%;">
+                        <div class="row" style="width: 100%;">
+                            <div class="col-9">
+                                <h1 class="text-end">BEST OF SCI-FI & FANTASY</h1>
+                            </div>
+                            <div class="col-3 viewall">
+                                <button class="btn btn-outline-dark">
+                                    <a href="viewAll/{{2}}" class="viewAll_button">view all</a>
+                                </button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="carouselBody" style="height: 85%;">
+                        <div id="demo4" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner container-fluid">
+                                <div class="carousel-item active">
+                                    <div class="row">
+                                        {%for book_data in sciFi_fantasy_data%}
+                                            <div class="carousel_img_page col-3">
+                                                <a href="viewBook/{{book_data.book_id}}"><img src="/media/{{book_data.cover_page}}" class="carousel_img"></a>
+                                            </div>
+                                        {%endfor%}
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="row">
+                                        {%for book_data in sciFi_fantasy_data1%}
+                                            <div class="carousel_img_page col-3">
+                                                <a href="viewBook/{{book_data.book_id}}"><img src="/media/{{book_data.cover_page}}" class="carousel_img"></a>
+                                            </div>
+                                        {%endfor%}
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" data-bs-target="#demo4" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next" data-bs-target="#demo4" data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+          
+            <!-- <div class="container-fluid" style="position: relative;">
+                <img src="/media/extra_img3.jpg" alt="" height="550px" width="100%">
+            </div> -->
+
+
+
+            <div class="d-flex justify-content-center align-items-center outerCarouselDiv" id="thriller">
+                <div class="outerCarouselDiv-items" style="background-color:rgb(186, 177, 177);">
+                    <div class="carouselTitle" style="height: 15%;">
+                        <div class="row" style="width: 100%;">
+                            <div class="col-10">
+                                <h1 class="text-end">BEST OF MYSTERY & THRILLER</h1>
+                            </div>
+                            <div class="col-2 viewall">
+                                <button class="btn btn-outline-dark">
+                                    <a href="viewAll/{{3}}" class="viewAll_button">view all</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carouselBody" style="height: 85%;">
+                        <div id="demo5" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner container-fluid">
+                                <div class="carousel-item active">
+                                    <div class="row">
+                                        {%for book_data in mystery_thriller_data%}
+                                            <div class="carousel_img_page col-3">
+                                                <a href="viewBook/{{book_data.book_id}}"><img src="/media/{{book_data.cover_page}}" class="carousel_img"></a>
+                                            </div>
+                                        {%endfor%}
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="row">
+                                        {%for book_data in mystery_thriller_data1%}
+                                            <div class="carousel_img_page col-3">
+                                                <a href="viewBook/{{book_data.book_id}}"><img src="/media/{{book_data.cover_page}}" class="carousel_img"></a>
+                                            </div>
+                                        {%endfor%}
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" data-bs-target="#demo5" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next" data-bs-target="#demo5" data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+          
+            <div class="d-flex justify-content-center align-items-center outerCarouselDiv" id="comics">
+                <div class="outerCarouselDiv-items" style="background-color:rgb(186, 177, 177);">
+                    <div class="carouselTitle container-fluid" style="height: 15%;">
+                        <div class="row" style="width: 100%;">
+                            <div class="col-8">
+                                <h1 class="text-end">BEST OF COMICS</h1>
+                            </div>
+                            <div class="col-4 viewall">
+                                <button class="btn btn-outline-dark">
+                                    <a href="viewAll/{{4}}" class="viewAll_button">view all</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carouselBody" style="height: 85%;">
+                        <div id="demo6" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner container-fluid">
+                                <div class="carousel-item active">
+                                    <div class="row">
+                                        {%for book_data in comics_data%}
+                                            <div class="carousel_img_page col-3">
+                                                <a href="viewBook/{{book_data.book_id}}"><img src="/media/{{book_data.cover_page}}" class="carousel_img"></a>
+                                            </div>
+                                        {%endfor%}
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="row">
+                                        {%for book_data in comics_data1%}
+                                            <div class="carousel_img_page col-3">
+                                                <a href="viewBook/{{book_data.book_id}}"><img src="/media/{{book_data.cover_page}}" class="carousel_img"></a>
+                                            </div>
+                                        {%endfor%}
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" data-bs-target="#demo6" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next" data-bs-target="#demo6" data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
+                        </div>
+                    </div>
+                  </div>
+
+            </div>
+        
+            
+            <!-- <div class="container-fluid" style="position: relative;">
+                <img src="/media/extra_img4.jpg" alt="" height="550px" width="100%">
+            </div> -->
+
+        </div>
+        
+      <!-- <a href="/media/pdf.pdf">
+        <button>Onclick</button>
+      </a> -->
+    </main>
+</body>
+</html>
